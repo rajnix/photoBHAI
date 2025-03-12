@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  username       String
+  ProfilePicture String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Model {
+  id             String             @id @default(uuid())
+  userId         String
+  name           String
+  type           ModelTypeEnum
+  age            Int
+  ethnicity      ModelEthnicityEnum
+  eyeColor       eyeColorEnum
+  bald           Boolean            @default(false)
+  trainingImages TrainingImages[]
+  outputImages   OutputImages[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model TrainingImages {
+  id      String @id @default(uuid())
+  url     String
+  modelID String
+  model   Model  @relation(fields: [modelID], references: [id])
+}
+
+model OutputImages {
+  id        String   @id @default(uuid())
+  imageUrl  String   @default("")
+  modelID   String
+  prompt    String
+  status    StatusEnum @default(Pending)
+  userID    String
+  model     Model    @relation(fields: [modelID], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Packs {
+  id      String       @id @default(uuid())
+  name    String
+  prompts PackPrompt[]
+}
+
+model PackPrompt {
+  id     String @id @default(uuid())
+  prompt String
+  packId String
+  pack   Packs  @relation(fields: [packId], references: [id])
+}
+
+enum ModelTypeEnum {
+  Man
+  Woman
+  Others
+}
+
+enum ModelEthnicityEnum {
+  White
+  Black
+  Asian
+  AsianAmerican  @map("Asian American")
+  EastAsian      @map("East Asian")
+  SouthAsian     @map("South Asian")
+  Hispanic
+  Pacific
+  MiddleEastern  @map("Middle Eastern")
+  SouthEastAsian @map("South East Asian")
+}
+
+enum eyeColorEnum {
+  Black
+  Brown
+  Hazel
+  Grey
+}
+
+enum StatusEnum {
+  Pending
+  Completed
+  Failed
+}
