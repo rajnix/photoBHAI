@@ -18,12 +18,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { UploadModal } from "@/components/ui/upload"
+
 
 
 export default function Train() {
     return (
         <div className="flex justify-center flex-col h-screen items-center">
-            <Card className="w-[350px]">
+            <Card className="w-[350px] px-5">
                 <CardHeader>
                     <CardTitle>Create project</CardTitle>
                     <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -95,11 +97,13 @@ export default function Train() {
                             </div>
                     </form>
                 </CardContent>
+                <UploadModal/>
                 <CardFooter className="flex justify-between">
                     <Button variant="outline">Cancel</Button>
                     <Button>Create Model</Button>
                 </CardFooter>
             </Card>
+            
         </div>
     )
 }

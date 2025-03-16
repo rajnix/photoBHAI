@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
-export default function Component() {
+export function UploadModal() {
   return (
     <Card>
       <CardHeader>
