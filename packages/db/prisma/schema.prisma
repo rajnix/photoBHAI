@@ -30,29 +30,36 @@ model Model {
   ethnicity      ModelEthnicityEnum
   eyeColor       eyeColorEnum
   bald           Boolean            @default(false)
-  trainingImages TrainingImages[]
+  triggerWord    String?
+  tensorPath     String?
+  trainingStatus ModelTrainingStatusEnum @default(Pending)
+  falAIrequestID String?
   outputImages   OutputImages[]
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
+  zipUrl         String
+   @@index([falAIrequestID])
 }
 
 model TrainingImages {
   id      String @id @default(uuid())
   url     String
   modelID String
-  model   Model  @relation(fields: [modelID], references: [id])
+  
 }
 
 model OutputImages {
-  id        String   @id @default(uuid())
-  imageUrl  String   @default("")
+  id        String     @id @default(uuid())
+  imageUrl  String     @default("")
   modelID   String
   prompt    String
   status    StatusEnum @default(Pending)
   userID    String
-  model     Model    @relation(fields: [modelID], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  falAIrequestID String?
+  model     Model      @relation(fields: [modelID], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  @@index([falAIrequestID])
 }
 
 model Packs {
@@ -96,6 +103,13 @@ enum eyeColorEnum {
 
 enum StatusEnum {
   Pending
+  Generated
+  Failed
+}
+
+enum ModelTrainingStatusEnum {
+  Pending
   Completed
   Failed
 }
+

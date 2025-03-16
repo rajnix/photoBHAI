@@ -23,7 +23,7 @@ export const TrainModel=z.object({
         "Gray"
     ]),
     bald:z.boolean(),
-    images:z.array(z.string())
+    zipUrl:z.string()
 
 })
 
